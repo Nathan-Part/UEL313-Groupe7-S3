@@ -3,20 +3,45 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-	<div class="row">
-		{% for link in links %}
-			<div class="col-md-4">
-			    <h2><a class="linkTitle" href="{{ path('link', { 'id': link.id }) }}">{{ link.title }}</a></h2>
-			    <p>{{ link.desc }}</p>
-			    <a href="{{ link.url }}" title="" target="_blank">Open ></a>
-			    <em>(by {{ link.user.username }})</em>
+<div class="page-header">
+    <h1>Links <small>Les derniers partages</small></h1>
+</div>
 
-			    {% for tag in link.tags %}
-			    	<a href="{{ path('tag', { 'id': tag.id }) }}" title="Filtrer">
-			    		{{ tag.title }}
-			    	</a>
-			    {% endfor %}
-			</div>
-		{% endfor %}
-	</div>
+<div class="row">
+    {% for link in links %}
+        <div class="col-sm-6 col-md-4">
+            <div class="panel panel-default link-card">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a class="linkTitle" href="{{ path('link', { 'id': link.id }) }}">{{ link.title }}</a>
+                    </h3>
+                </div>
+
+                <div class="panel-body">
+                    <p class="text-muted">{{ link.desc }}</p>
+                    <p class="small text-muted">Crée par <strong>{{ link.user.username }}</strong></p>
+                </div>
+
+                <div class="panel-footer clearfix">
+                    <div class="pull-left tags">
+						<span> tag : </span>
+						<br />		
+                        {% for tag in link.tags %}
+                            <a href="{{ path('tag', { 'id': tag.id }) }}" class="label label-info tag-pill">{{ tag.title }}</a>
+                        {% endfor %}
+                    </div>
+					
+					 <div class="pull-right tags">
+						<span> URL : </span>
+						<br />
+						<a class="btn btn-primary btn-xs pull-right" href="{{ link.url }}" target="_blank" rel="noopener">
+							<span class="glyphicon glyphicon-new-window"></span> Open
+						</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

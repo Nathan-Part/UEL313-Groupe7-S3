@@ -1,28 +1,46 @@
 {% extends "layout.html.twig" %}
 
-{% block title %}Résultat(s) pour "{{ tag.title }}" {% endblock %}
+{% block title %}Résultat(s) pour "{{ tag.title }}"{% endblock %}
 
 {% block content %}
-	<div class="row">
-		<h1>Résultat(s) associé(s) au tag "{{ tag.title }}"</h1>
-		{% if links|length <= 0 %}
-			<p>
-				Aucun résultat ne correspond au tag "{{ tag.title }}".
-			</p>
-		{% else %}
-			{% for link in links %}
-				<div class="col-md-4">
-				    <h2><a class="linkTitle" href="{{ path('link', { 'id': link.id }) }}">{{ link.title }}</a></h2>
-				    <p>{{ link.desc }}</p>
-				    <a href="{{ link.url }}" title="" target="_blank">Open ></a>
-				    <em>(by {{ link.user.username }})</em>
-				    {% for tag in link.tags %}
-				    	<a href="{{ path('tag', { 'id': tag.id }) }}" title="Filtrer">
-				    		{{ tag.title }}
-				    	</a>
-				    {% endfor %}
-				</div>
-			{% endfor %}
-		{% endif %}
-	</div>
+<div class="page-header">
+    <h1>Tag : "{{ tag.title }}" <small>résultats</small></h1>
+</div>
+
+{% if links|length <= 0 %}
+    <div class="alert alert-warning">
+        Aucun résultat ne correspond au tag "{{ tag.title }}".
+    </div>
+{% else %}
+    <div class="row">
+        {% for link in links %}
+            <div class="col-sm-6 col-md-4">
+                <div class="panel panel-default link-card">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a class="linkTitle" href="{{ path('link', { 'id': link.id }) }}">{{ link.title }}</a>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <p class="text-muted">{{ link.desc }}</p>
+                        <p class="small text-muted">by <strong>{{ link.user.username }}</strong></p>
+                    </div>
+
+                    <div class="panel-footer clearfix">
+                        <div class="pull-left tags">
+                            {% for t in link.tags %}
+                                <a href="{{ path('tag', { 'id': t.id }) }}" class="label label-info tag-pill">{{ t.title }}</a>
+                            {% endfor %}
+                        </div>
+
+                        <a class="btn btn-primary btn-xs pull-right" href="{{ link.url }}" target="_blank" rel="noopener">
+                            <span class="glyphicon glyphicon-new-window"></span> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 {% endblock %}

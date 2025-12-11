@@ -3,16 +3,26 @@
 {% block title %}{{ link.title }}{% endblock %}
 
 {% block content %}
-<p>
-    <h2>{{ link.title }}</h2>
-    <p>{{ link.desc }}</p>
-    <a href="{{ link.url }}" title="" target="_blank">Open ></a>
-    <em>(by {{ link.user.username }})</em>
+<div class="page-header">
+    <h1>{{ link.title }}</h1>
+</div>
 
-    {% for tag in link.tags %}
-    	<a href="{{ path('tag', { 'id': tag.id }) }}" title="Filtrer">
-    		{{ tag.title }}
-    	</a>
-    {% endfor %}
-</p>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p class="lead text-muted">{{ link.desc }}</p>
+        <p class="small text-muted">by <strong>{{ link.user.username }}</strong></p>
+
+        <div class="tags" style="margin-top: 10px;">
+            {% for tag in link.tags %}
+                <a href="{{ path('tag', { 'id': tag.id }) }}" class="label label-info tag-pill">{{ tag.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="panel-footer clearfix">
+        <a class="btn btn-primary btn-sm pull-right" href="{{ link.url }}" target="_blank" rel="noopener">
+            <span class="glyphicon glyphicon-new-window"></span> Open
+        </a>
+    </div>
+</div>
 {% endblock %}
