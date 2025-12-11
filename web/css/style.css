@@ -1,15 +1,103 @@
-body { 
-    padding-top: 100px; 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --color-primary: #3B82F6;
+    --color-dark: #1E293B;
+    --color-background: #F8FAFC;
+    --color-card: #FFFFFF;
+    --text-default: #111827;
 }
 
-#logo{
-	width:230px;
-	height: 0;
-	display: block;
-	overflow: hidden;
-	padding-top: 76px;
-	font-size: 0;
-	background: url("../images/logo.png") no-repeat center center;
+body {
+    padding-top: 100px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-background);
+    color: var(--text-default);
+    font-size: 16px;
+    margin: 0;
+}
+
+p,
+li,
+a,
+span {
+    color: var(--text-default);
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
+a:hover {
+    opacity: 0.85;
+}
+
+#content {
+    max-width: 1100px;
+    margin: 40px auto 60px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#content .row .col-md-4 {
+    background-color: var(--color-card);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    margin-bottom: 20px;
+    padding: 18px 20px;
+}
+
+#content .row .col-md-4 h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.linkTitle {
+    color: var(--color-primary);
+}
+
+.linkTitle:hover,
+.linkTitle:focus {
+    text-decoration: underline;
+}
+
+#content .row .col-md-4 p {
+    color: #4B5563;
+    margin-bottom: 8px;
+}
+
+#content .row .col-md-4 em {
+    display: block;
+    font-size: 0.85rem;
+    color: #6B7280;
+    margin-top: 4px;
+    font-style: normal;
+}
+
+#content .row .col-md-4>a[target="_blank"] {
+    display: inline-block;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+#content .row .col-md-4 a+em+a,
+#content .row .col-md-4 em+a {
+    margin-right: 6px;
+    font-size: 0.85rem;
+}
+
+#logo {
+    width: 230px;
+    height: 0;
+    display: block;
+    overflow: hidden;
+    padding-top: 76px;
+    font-size: 0;
+    background: url("../images/logo.png") no-repeat center center;
 }
 
 .footer {
@@ -19,7 +107,8 @@ body {
     margin-top: 30px;
 }
 
-.articleTitle:hover, .articleTitle:focus {
+.articleTitle:hover,
+.articleTitle:focus {
     text-decoration: none;
 }
 
