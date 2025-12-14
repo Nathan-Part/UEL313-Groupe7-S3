@@ -94,6 +94,30 @@ class LinkDAO extends DAO
         return $_links;
     }
 
+    public function findLast($limit = 15)
+    {
+        $sql = "
+            SELECT *
+            FROM tl_liens
+            ORDER BY lien_id DESC
+            LIMIT :limit
+        ";
+
+        $result = $this->getDb()->fetchAll(
+            $sql,
+            array('limit' => (int) $limit),
+            array('limit' => \PDO::PARAM_INT)
+        );
+
+        $links = array();
+        foreach ($result as $row) {
+            $linkId = $row['lien_id'];
+            $links[$linkId] = $this->buildDomainObject($row);
+        }
+
+        return $links;
+    }
+
     /**
      * Saves a link into the database.
      *
