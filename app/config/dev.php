@@ -4,7 +4,7 @@
 $app['db.options'] = array(
     'driver'   => 'pdo_mysql',
     'charset'  => 'utf8',
-    'host'     => 'localhost',  
+    'host'     => 'mysql',  
     'port'     => '3306',
     'dbname'   => 'watson',
     'user'     => 'watson',

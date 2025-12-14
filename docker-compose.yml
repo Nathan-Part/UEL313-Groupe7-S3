@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  php:
+    build: ./docker/php
+    container_name: watson_php
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "1234:80"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: watson_mysql
+    environment:
+      MYSQL_DATABASE: watson
+      MYSQL_USER: watson
+      MYSQL_PASSWORD: watson
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
