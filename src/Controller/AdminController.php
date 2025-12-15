@@ -17,63 +17,28 @@ class AdminController {
      *
      * @param Application $app Silex application
      */
-    public function indexAction(Application $app) {
-        $links = $app['dao.link']->findAll();
+    public function indexAction(Application $app, Request $request) {
+        // Récupérer le numéro de page depuis la requête
+        $page = $request->query->getInt('page', 1);
+        $perPage = 10; // Nombre d'éléments par page
+        
+        // Récupérer les liens paginés
+        $links = $app['dao.link']->findPaginated($page, $perPage);
+        
+        // Compter le nombre total de liens
+        $totalLinks = $app['dao.link']->countAll();
+        $totalPages = ceil($totalLinks / $perPage);
+        
         $users = $app['dao.user']->findAll();
+        
         return $app['twig']->render('admin.html.twig', array(
             'links' => $links,
-            'users' => $users));
-    }
-
-    /**
-     * Add link controller.
-     *
-     * @param Request $request Incoming request
-     * @param Application $app Silex application
-     */
-    public function addLinkAction(Request $request, Application $app) { 
-        $link     = new Link();
-        $linkForm = $app['form.factory']->create(new LinkType(), $link);
-        $linkForm->handleRequest($request);
-
-        if ($linkForm->isSubmitted() && $linkForm->isValid()) {
-            // Store data in object
-            $linkData = $linkForm->getData();
-
-            // Transform tags (string) into array of objects "Tag"
-            $str_tags = $linkData->getTags();
-            $_tags    = array();
-
-            if(!is_null($str_tags) && !empty($str_tags)){
-                $array_tags = explode(' ', $str_tags);
-                if(count($array_tags)){
-                    foreach($array_tags as $row){
-                        $word = new Tag();
-                        $word->setTitle($row);
-                        $app['dao.tag']->save($word);
-                        array_push($_tags, $word);
-                    }
-                }
-            }
-
-            $user = $app['user'];
-            $link->setUser($user);
-            $app['dao.link']->save($link);
-            $idLink = $link->getId();
-
-            // Save connection between link and tag(s)
-            if(count($_tags)){
-                foreach($_tags as $tag){
-                    $app['dao.tag']->saveConnection($idLink, $tag);
-                }
-            }
-
-            $app['session']->getFlashBag()->add('success', 'The link was successfully created.');
-        }
-
-        return $app['twig']->render('link_form.html.twig', array(
-            'title' => 'New link',
-            'linkForm' => $linkForm->createView()));
+            'users' => $users,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'perPage' => $perPage,
+            'totalLinks' => $totalLinks
+        ));
     }
 
     /**

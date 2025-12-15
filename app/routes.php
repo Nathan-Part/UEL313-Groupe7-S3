@@ -17,7 +17,6 @@ $app->get('/rss', "Watson\Controller\RssController::feedAction")->bind('rss');
 
 // Admin zone
 $app->get('/admin', "Watson\Controller\AdminController::indexAction")->bind('admin');
-
 // Add a new link
 $app->match('/admin/link/add', "Watson\Controller\AdminController::addLinkAction")->bind('admin_link_add');
 

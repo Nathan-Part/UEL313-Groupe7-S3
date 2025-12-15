@@ -28,6 +28,9 @@ class LinkDAO extends DAO
      * Return a list of all links, sorted by date (most recent first).
      *
      * @return array A list of all links.
+     * @param integer $page The current page number.
+     * @param integer $perPage Number of items per page.
+     * @return array A list of links for the current page.
      */
     public function findAll() {
         $sql = "
@@ -75,6 +78,47 @@ class LinkDAO extends DAO
      *
      * @return A list of all links.
      */
+    public function findPaginated($page, $perPage = 10) {
+        $offset = ($page - 1) * $perPage;
+        
+        $sql = "
+            SELECT * 
+            FROM tl_liens 
+            ORDER BY lien_id DESC
+            LIMIT :limit OFFSET :offset
+        ";
+        
+        $result = $this->getDb()->fetchAll(
+            $sql,
+            array(
+                'limit' => (int) $perPage,
+                'offset' => (int) $offset
+            ),
+            array(
+                'limit' => \PDO::PARAM_INT,
+                'offset' => \PDO::PARAM_INT
+            )
+        );
+    
+        // Convert query result to an array of domain objects
+        $_links = array();
+        foreach ($result as $row) {
+            $linkId          = $row['lien_id'];
+            $_links[$linkId] = $this->buildDomainObject($row);
+        }
+        return $_links;
+    }
+    
+    /**
+     * Count total number of links.
+     *
+     * @return integer Total number of links.
+     */
+    public function countAll() {
+        $sql = "SELECT COUNT(*) as total FROM tl_liens";
+        $row = $this->getDb()->fetchAssoc($sql);
+        return $row['total'];
+    }
     public function findAllByTag($id) {
         $sql = "
             SELECT tl_liens.*
